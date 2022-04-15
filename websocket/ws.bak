@@ -1,5 +1,5 @@
 #!/bin/bash
-# My Telegram : https://t.me/joysmark
+# My Telegram : https://t.me/Manternet
 # ==========================================
 # Color
 RED='\033[0;31m'
@@ -18,14 +18,14 @@ biji=`date +"%Y-%m-%d" -d "$dateFromServer"`
 
 MYIP=$(curl -sS ipv4.icanhazip.com)
 # Getting Proxy Template
-wget -q -O /usr/local/bin/websocket https://raw.githubusercontent.com/geovpn/mon/main/websocket/websocket.py
+wget -q -O /usr/local/bin/websocket https://raw.githubusercontent.com/Manpokr/mon/main/websocket/websocket.py
 chmod +x /usr/local/bin/websocket
 
 # Installing Service
 cat > /etc/systemd/system/websocket.service << END
 [Unit]
-Description=Python Proxy Mod By geovpn
-Documentation=https://github.com/geovpn/vpn
+Description=Python Proxy Mod By manpokr
+Documentation=https://github.com/Manpokr/mon
 After=network.target nss-lookup.target
 
 [Service]
@@ -42,14 +42,14 @@ WantedBy=multi-user.target
 END
 
 # Getting Proxy Template
-wget -q -O /usr/local/bin/ws-ovpn https://raw.githubusercontent.com/geovpn/mon/main/websocket/ws-ovpn.py
+wget -q -O /usr/local/bin/ws-ovpn https://raw.githubusercontent.com/Manpokr/mon/main/websocket/ws-ovpn.py
 chmod +x /usr/local/bin/ws-ovpn
 
 # Installing Service
 cat > /etc/systemd/system/ws-ovpn.service << END
 [Unit]
 Description=SSHWS
-Documentation=https://github.com/joysmart/vpn
+Documentation=https://github.com/Manpokr/mon
 After=network.target nss-lookup.target
 
 [Service]
@@ -66,14 +66,14 @@ WantedBy=multi-user.target
 END
 
 # Installing Service ws-stunnel
-wget -q -O /usr/local/bin/ws-stunnel https://raw.githubusercontent.com/geovpn/mon/main/websocket/ws-stunnel
+wget -q -O /usr/local/bin/ws-stunnel https://raw.githubusercontent.com/Manpokr/mon/main/websocket/ws-stunnel
 chmod +x /usr/local/bin/ws-stunnel
 
 # Create system Service ws-stunnel
 cat > /etc/systemd/system/ws-stunnel.service <<END
 [Unit]
 Description=SSHSSl
-Documentation=https://github.com/joysmart/vpn
+Documentation=https://github.com/Manpokr/mon
 After=network.target nss-lookup.target
 
 [Service]

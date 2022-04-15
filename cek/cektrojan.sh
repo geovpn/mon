@@ -10,16 +10,6 @@ NC="\e[0m"
 # Validate Your IP Address
 MYIP=$(wget -qO- ipinfo.io/ip);
 echo "Checking VPS"
-IZIN=$(curl -sS https://raw.githubusercontent.com/geovpn/perizinan/main/main/allow | awk '{print $4}' | grep $MYIP )
-if [[ $MYIP = $IZIN ]]; then
-echo -e "${NC}${GREEN}Permission Accepted...${NC}"
-else
-echo -e "${NC}${RED}Permission Denied!${NC}";
-echo -e "${NC}${LIGHT}Please Contact Admin!!"
-rm -f setup.sh
-exit 0
-fi
-rm -f setup.sh
 clear
 
 data=( `cat /var/log/trojan.log | grep -w 'authenticated as' | awk '{print $7}' | sort | uniq`);
@@ -45,4 +35,4 @@ echo "$jum2";
 echo "-------------------------------"
 done
 read -p "Press Enter For Back To TRojan Menu/ CTRL+C To Cancel : "
-trojan-menu
+menu-v2ray

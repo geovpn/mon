@@ -10,16 +10,6 @@ NC="\e[0m"
 # Validate Your IP Address
 MYIP=$(wget -qO- ipinfo.io/ip);
 echo "Checking VPS"
-IZIN=$(curl -sS https://raw.githubusercontent.com/geovpn/perizinan/main/main/allow | awk '{print $4}' | grep $MYIP )
-if [[ $MYIP = $IZIN ]]; then
-echo -e "${NC}${GREEN}Permission Accepted...${NC}"
-else
-echo -e "${NC}${RED}Permission Denied!${NC}";
-echo -e "${NC}${LIGHT}Please Contact Admin!!"
-rm -f setup.sh
-exit 0
-fi
-rm -f setup.sh
 clear
 echo -n > /tmp/other.txt
 data=( `cat /etc/v2ray/vless.json | grep '^###' | cut -d ' ' -f 2`);
@@ -61,4 +51,4 @@ echo "$oth";
 echo "-------------------------------"
 rm -rf /tmp/other.txt
 read -p "Press Enter For Back To V2Ray/VLess Menu / CTRL+C To Cancel : "
-vless-menu
+menu-v2ray

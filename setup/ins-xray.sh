@@ -1,22 +1,12 @@
 #!/bin/bash
 # XRay Installation
-# Coded By BotVPN
+# Mod by Manternet
 # ==================================
 red='\e[1;31m'
 green='\e[0;32m'
 NC='\e[0m'
 MYIP=$(wget -qO- ipinfo.io/ip);
 echo "Checking VPS"
-IZIN=$(curl -sS https://raw.githubusercontent.com/geovpn/perizinan/main/main/allow | awk '{print $4}' | grep $MYIP )
-if [[ $MYIP = $IZIN ]]; then
-echo -e "${NC}${GREEN}Permission Accepted...${NC}"
-else
-echo -e "${NC}${RED}Permission Denied!${NC}";
-echo -e "${NC}${LIGHT}Please Contact Admin!!"
-rm -f setup.sh
-exit 0
-fi
-rm -f setup.sh
 clear
 domain=$(cat /etc/xray/domain)
 
@@ -24,9 +14,9 @@ domain=$(cat /etc/xray/domain)
 mkdir -p /usr/local/xray/
 
 # // Installation XRay Core
-wget -q -O /usr/local/xray/xray "https://raw.githubusercontent.com/geovpn/sampi/main/core/xray" 
-wget -q -O /usr/local/xray/geosite.dat "https://raw.githubusercontent.com/geovpn/sampi/main/addon/geosite.dat"
-wget -q -O /usr/local/xray/geoip.dat "https://raw.githubusercontent.com/geovpn/sampi/main/addon/geoip.dat"
+wget -q -O /usr/local/xray/xray "https://raw.githubusercontent.com/geovpn/mon/main/core/xray" 
+wget -q -O /usr/local/xray/geosite.dat "https://raw.githubusercontent.com/geovpn/mon/main/addon/geosite.dat"
+wget -q -O /usr/local/xray/geoip.dat "https://raw.githubusercontent.com/geovpn/mon/main/addon/geoip.dat"
 chmod +x /usr/local/xray/xray
 
 # // Make XRay Mini Root Folder
@@ -178,7 +168,7 @@ LimitNOFILE=1000000
 WantedBy=multi-user.target
 EOF
 
-wget https://raw.githubusercontent.com/geovpn/sampi/main/setup/plugin-xray.sh && chmod +x plugin-xray.sh && ./plugin-xray.sh
+wget https://raw.githubusercontent.com/geovpn/mon/main/setup/plugin-xray.sh && chmod +x plugin-xray.sh && ./plugin-xray.sh
 rm -f /root/plugin-xray.sh
 service squid start
 uuid=$(cat /proc/sys/kernel/random/uuid)
@@ -727,7 +717,7 @@ cat > /etc/xray/trojan.json <<END
     },
     "inbounds": [
         {
-            "port": 443,
+            "port": 2089,
             "protocol": "trojan",
             "settings": {
                 "clients": [
@@ -863,6 +853,38 @@ cat > /etc/xray/vlessgrpc.json << END
 }
 END
 
+cat > /etc/xray/trojangrpc.json << END
+{
+    "inbounds": [
+        {
+            "port": 31304,
+            "listen": "127.0.0.1",
+            "protocol": "trojan",
+            "tag": "trojangRPCTCP",
+            "settings": {
+                "clients": [
+                    {
+                        "password": "dev",
+                        "email": "${domain}"
+                    }
+                ],
+                "fallbacks": [
+                    {
+                        "dest": "31300"
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "grpc",
+                "grpcSettings": {
+                    "serviceName": "/trgorpc"
+                }
+            }
+        }
+    ]
+}
+END
+
 cat > /etc/systemd/system/vmess-grpc.service << EOF
 [Unit]
 Description=XRay VMess GRPC Service
@@ -899,6 +921,24 @@ LimitNOFILE=1000000
 WantedBy=multi-user.target
 EOF
 
+cat > /etc/systemd/system/trojan-grpc.service << EOF
+[Unit]
+Description=XRay Trojan GRPC Service
+Documentation=https://speedtest.net https://github.com/XTLS/Xray-core
+After=network.target nss-lookup.target
+
+[Service]
+User=root
+NoNewPrivileges=true
+ExecStart=/usr/local/xray/xray -config /etc/xray/trojangrpc.json
+RestartPreventExitStatus=23
+LimitNPROC=10000
+LimitNOFILE=1000000
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
 iptables -I INPUT -m state --state NEW -m tcp -p tcp --dport 6565-j ACCEPT
 iptables -I INPUT -m state --state NEW -m udp -p udp --dport 6565-j ACCEPT
 iptables -I INPUT -m state --state NEW -m tcp -p tcp --dport 6161 -j ACCEPT
@@ -919,6 +959,8 @@ iptables -I INPUT -m state --state NEW -m tcp -p tcp --dport 80 -j ACCEPT
 iptables -I INPUT -m state --state NEW -m udp -p udp --dport 80 -j ACCEPT
 iptables -I INPUT -m state --state NEW -m tcp -p tcp --dport 880 -j ACCEPT
 iptables -I INPUT -m state --state NEW -m udp -p udp --dport 880 -j ACCEPT
+iptables -I INPUT -m state --state NEW -m tcp -p tcp --dport 2099 -j ACCEPT
+iptables -I INPUT -m state --state NEW -m udp -p udp --dport 2099 -j ACCEPT
 iptables-save > /etc/iptables.up.rules
 iptables-restore -t < /etc/iptables.up.rules
 netfilter-persistent save
@@ -942,16 +984,59 @@ systemctl enable vmess-grpc
 systemctl restart vmess-grpc
 systemctl enable vless-grpc
 systemctl restart vless-grpc
+systemctl enable trojan-grpc
+systemctl restart trojan-grpc
+
 
 cd /usr/bin
 
-wget -O addgrpc "https://raw.githubusercontent.com/geovpn/sampi/main/add/addxvgrpc.sh"
-wget -O delgrpc "https://raw.githubusercontent.com/geovpn/sampi/main/del/delgrpc.sh"
-wget -O renewgrpc "https://raw.githubusercontent.com/geovpn/sampi/main/renew/renewgrpc.sh"
-wget -O cekgrpc "https://raw.githubusercontent.com/geovpn/sampi/main/cek/cekgrpc.sh"
+wget -O addxvmess "https://raw.githubusercontent.com/geovpn/mon/main/add/addxv2ray.sh"
+wget -O addxvless "https://raw.githubusercontent.com/geovpn/mon/main/add/addxvless.sh"
+wget -O addxtrojan "https://raw.githubusercontent.com/geovpn/mon/main/add/addxtrojan.sh"
+wget -O addxtls "https://raw.githubusercontent.com/geovpn/mon/main/add/addxtls.sh"
+wget -O addgrpc "https://raw.githubusercontent.com/geovpn/mon/main/add/addxvgrpc.sh"
+wget -O delxvmess "https://raw.githubusercontent.com/geovpn/mon/main/del/delxv2ray.sh"
+wget -O delxvless "https://raw.githubusercontent.com/geovpn/mon/main/del/delxvless.sh"
+wget -O delxtrojan "https://raw.githubusercontent.com/geovpn/mon/main/del/delxtrojan.sh"
+wget -O delxtls "https://raw.githubusercontent.com/geovpn/mon/main/del/delxtls.sh"
+wget -O delgrpc "https://raw.githubusercontent.com/geovpn/mon/main/del/delgrpc.sh"
+wget -O cekxvmess "https://raw.githubusercontent.com/geovpn/mon/main/cek/cekxv2ray.sh"
+wget -O cekxvless "https://raw.githubusercontent.com/geovpn/mon/main/cek/cekxvless.sh"
+wget -O cekxtrojan "https://raw.githubusercontent.com/geovpn/mon/main/cek/cekxtrojan.sh"
+wget -O cekxtls "https://raw.githubusercontent.com/geovpn/mon/main/cek/cekxray.sh"
+wget -O cekgrpc "https://raw.githubusercontent.com/geovpn/mon/main/cek/cekgrpc.sh"
+wget -O renewxvmess "https://raw.githubusercontent.com/geovpn/mon/main/renew/renewxv2ray.sh"
+wget -O renewxvless "https://raw.githubusercontent.com/geovpn/mon/main/renew/renewxvless.sh"
+wget -O renewxtrojan "https://raw.githubusercontent.com/geovpn/mon/main/renew/renewxtrojan.sh"
+wget -O renewxtls "https://raw.githubusercontent.com/geovpn/mon/main/renew/renewxtls.sh"
+wget -O renewgrpc "https://raw.githubusercontent.com/geovpn/mon/main/renew/renewgrpc.sh"
+wget -O trialxvmess "https://raw.githubusercontent.com/geovpn/mon/main/trial/trialxvmess.sh"
+wget -O trialxvless "https://raw.githubusercontent.com/geovpn/mon/main/trial/trialxvless.sh"
+wget -O trialxtrojan "https://raw.githubusercontent.com/geovpn/mon/main/trial/trialxtrojan.sh"
+wget -O trialgrpc "https://raw.githubusercontent.com/geovpn/mon/main/trial/trialgrpc.sh"
+chmod +x addxvmess
+chmod +x addxvless
+chmod +x addxtrojan
+chmod +x addxtls
 chmod +x addgrpc
+chmod +x delxvless
+chmod +x delxvmess
+chmod +x delxtrojan
+chmod +x delxtls
 chmod +x delgrpc
-chmod +x renewgrpc
+chmod +x cekxvmess
+chmod +x cekxvless
+chmod +x cekxtrojan
+chmod +x cekxtls
 chmod +x cekgrpc
-cd
-rm -f install-xray.sh
+chmod +x renewxvmess
+chmod +x renewxvless
+chmod +x renewxtrojan
+chmod +x renewxtls
+chmod +x renewgrpc
+chmod +x trialxvmess
+chmod +x trialxvmess
+chmod +x trialgrpc
+
+
+

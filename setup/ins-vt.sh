@@ -4,16 +4,6 @@ green='\e[0;32m'
 NC='\e[0m'
 MYIP=$(wget -qO- ipinfo.io/ip);
 echo "Checking VPS"
-IZIN=$(curl -sS https://raw.githubusercontent.com/geovpn/perizinan/main/main/allow | awk '{print $4}' | grep $MYIP )
-if [[ $MYIP = $IZIN ]]; then
-echo -e "${NC}${GREEN}Permission Accepted...${NC}"
-else
-echo -e "${NC}${RED}Permission Denied!${NC}";
-echo -e "${NC}${LIGHT}Please Contact Admin!!"
-rm -f setup.sh
-exit 0
-fi
-rm -f setup.sh
 clear
  #V2Ray Core
 domain=$(cat /etc/v2ray/domain)
@@ -31,7 +21,7 @@ chronyc tracking -v
 date
 root
 # install v2ray
-wget https://raw.githubusercontent.com/geovpn/sampi/main/setup/go.sh && chmod +x go.sh && ./go.sh
+wget https://raw.githubusercontent.com/Manpokr/mon/main/setup/go.sh && chmod +x go.sh && ./go.sh
 rm -f /root/go.sh
 mkdir -p /etc/trojan
 bash -c "$(wget -q -O- https://raw.githubusercontent.com/trojan-gfw/trojan-quickstart/master/trojan-quickstart.sh)"
@@ -498,21 +488,21 @@ systemctl enable trojan
 systemctl restart v2ray
 systemctl enable v2ray
 cd /usr/bin
-wget -O addvmess "https://raw.githubusercontent.com/geovpn/sampi/main/add/addvmess.sh"
-wget -O addvless "https://raw.githubusercontent.com/geovpn/sampi/main/add/addvless.sh"
-wget -O addtrojan "https://raw.githubusercontent.com/geovpn/sampi/main/add/addtrojan.sh"
-wget -O delvmess "https://raw.githubusercontent.com/geovpn/sampi/main/del/delvmess.sh"
-wget -O delvless "https://raw.githubusercontent.com/geovpn/sampi/main/del/delvless.sh"
-wget -O deltrojan "https://raw.githubusercontent.com/geovpn/sampi/main/del/deltrojan.sh"
-wget -O cekvmess "https://raw.githubusercontent.com/geovpn/sampi/main/cek/cekvmess.sh"
-wget -O cekvless "https://raw.githubusercontent.com/geovpn/sampi/main/cek/cekvless.sh"
-wget -O cektrojan "https://raw.githubusercontent.com/geovpn/sampi/main/cek/cektrojan.sh"
-wget -O renewvmess "https://raw.githubusercontent.com/geovpn/sampi/main/renew/renewvmess.sh"
-wget -O renewvless "https://raw.githubusercontent.com/geovpn/sampi/main/renew/renewvless.sh"
-wget -O renewtrojan "https://raw.githubusercontent.com/geovpn/sampi/main/renew/renewtrojan.sh"
-wget -O addxtls "https://raw.githubusercontent.com/geovpn/sampi/main/add/addxtls.sh"
-wget -O delxtls "https://raw.githubusercontent.com/geovpn/sampi/main/del/delxtls.sh"
-wget -O renewxtls "https://raw.githubusercontent.com/geovpn/sampi/main/renew/renewxtls.sh"
+wget -O addvmess "https://raw.githubusercontent.com/Manpokr/mon/main/add/addvmess.sh"
+wget -O addvless "https://raw.githubusercontent.com/Manpokr/mon/main/add/addvless.sh"
+wget -O addtrojan "https://raw.githubusercontent.com/Manpokr/mon/main/add/addtrojan.sh"
+wget -O delvmess "https://raw.githubusercontent.com/Manpokr/mon/main/del/delvmess.sh"
+wget -O delvless "https://raw.githubusercontent.com/Manpokr/mon/main/del/delvless.sh"
+wget -O deltrojan "https://raw.githubusercontent.com/Manpokr/mon/main/del/deltrojan.sh"
+wget -O cekvmess "https://raw.githubusercontent.com/Manpokr/mon/main/cek/cekvmess.sh"
+wget -O cekvless "https://raw.githubusercontent.com/Manpokr/mon/main/cek/cekvless.sh"
+wget -O cektrojan "https://raw.githubusercontent.com/Manpokr/mon/main/cek/cektrojan.sh"
+wget -O renewvmess "https://raw.githubusercontent.com/Manpokr/mon/main/renew/renewvmess.sh"
+wget -O renewvless "https://raw.githubusercontent.com/Manpokr/mon/main/renew/renewvless.sh"
+wget -O renewtrojan "https://raw.githubusercontent.com/Manpokr/mon/main/renew/renewtrojan.sh"
+wget -O trialvmess "https://raw.githubusercontent.com/Manpokr/mon/main/trial/trialvmess.sh"
+wget -O trialvless "https://raw.githubusercontent.com/Manpokr/mon/main/trial/trialvless.sh"
+wget -O trialtrojan "https://raw.githubusercontent.com/Manpokr/mon/main/trial/trialtrojan.sh"
 chmod +x addvmess
 chmod +x addvless
 chmod +x addtrojan
@@ -525,9 +515,9 @@ chmod +x cektrojan
 chmod +x renewvmess
 chmod +x renewvless
 chmod +x renewtrojan
-chmod +x renewxtls
-chmod +x addxtls
-chmod +x delxtls
+chmod +x trialvmess
+chmod +x trialvless
+chmod +x trialtrojan
 cd
 rm -f ins-vt.sh
 

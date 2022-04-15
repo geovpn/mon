@@ -6,20 +6,6 @@ green='\e[0;32m'
 NC='\e[0m'
 MYIP=$(wget -qO- ipinfo.io/ip);
 echo "Checking VPS"
-IZIN=$(curl -sS https://raw.githubusercontent.com/geovpn/perizinan/main/main/allow | awk '{print $4}' | grep $MYIP )
-if [[ $MYIP = $IZIN ]]; then
-echo -e "${NC}${GREEN}Permission Accepted...${NC}"
-else
-echo -e "${NC}${RED}Permission Denied!${NC}";
-echo -e "${NC}${LIGHT}Please Contact Admin!!"
-rm -f setup.sh
-exit 0
-fi
-rm -f setup.sh
-clear
-red='\e[1;31m'
-green='\e[0;32m'
-NC='\e[0m'
 MYIP=$(wget -qO- ifconfig.me/ip);
 clear
 # Domain 
@@ -37,9 +23,9 @@ touch /etc/trojan-go/uuid.txt
 mkdir -p /etc/trojan-go/
 chmod 777 /etc/trojan-go/
 touch /etc/trojan-go/trojan-go.pid
-wget -O /etc/trojan-go/trojan-go https://raw.githubusercontent.com/castleUI/NewSCv2/main/core/trojan-go
-wget -O /etc/trojan-go/geoip.dat https://raw.githubusercontent.com/castleUI/NewSCv2/main/addon/geoip.dat
-wget -O /etc/trojan-go/geosite.dat https://raw.githubusercontent.com/castleUI/NewSCv2/main/addon/geosite.dat
+wget -O /etc/trojan-go/trojan-go https://raw.githubusercontent.com/geovpn/mon/main/core/trojan-go
+wget -O /etc/trojan-go/geoip.dat https://raw.githubusercontent.com/geovpn/mon/main/addon/geoip.dat
+wget -O /etc/trojan-go/geosite.dat https://raw.githubusercontent.com/geovpn/mon/main/addon/geosite.dat
 chmod +x /etc/trojan-go/trojan-go
 cat <<EOF > /etc/trojan-go/config.json
 {
@@ -47,7 +33,7 @@ cat <<EOF > /etc/trojan-go/config.json
     "local_addr": "0.0.0.0",
     "local_port": 2096,
     "remote_addr": "127.0.0.1",
-    "remote_port": 81,
+    "remote_port": 89,
     "log_level": 1,
     "log_file": "/var/log/trojan-go.log",
     "password": [
@@ -64,7 +50,7 @@ cat <<EOF > /etc/trojan-go/config.json
     "cipher": "TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384:TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256:TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256",
     "curves": "",
     "prefer_server_cipher": true,
-    "sni": "$domain",
+    "sni": "$sni",
     "alpn": [
       "http/1.1"
     ],
@@ -97,8 +83,8 @@ cat <<EOF > /etc/trojan-go/config.json
   },
   "websocket": {
     "enabled": true,
-    "path": "/brody",
-    "host": "$domain"
+    "path": "/TrGo",
+    "host": "$sni"
   },
   "shadowsocks": {
     "enabled": false,
@@ -180,6 +166,7 @@ LimitNOFILE=infinity
 
 [Install]
 WantedBy=multi-user.target
+EOF
 
 cat <<EOF > /etc/trojan-go/uuid.txt
 $uuid
@@ -196,4 +183,16 @@ systemctl daemon-reload
 systemctl enable trojan-go.service
 systemctl start trojan-go
 systemctl enable trojan-go@.service
-systemctl start trojan-go
+systemctl start trojan-go@
+
+#trojango
+cd /usr/bin
+wget -O addtrgo https://raw.githubusercontent.com/geovpn/mon/main/add/addtrgo.sh
+wget -O cektrgo https://raw.githubusercontent.com/geovpn/mon/main/cek/cektrgo.sh
+wget -O deltrgo https://raw.githubusercontent.com/geovpn/mon/main/del/deltrgo.sh
+wget -O renewtrgo https://raw.githubusercontent.com/geovpn/mon/main/renew/renewtrgo.sh
+
+chmod +x addtrgo
+chmod +x cektrgo
+chmod +x deltrgo
+chmod +x renewtrgo

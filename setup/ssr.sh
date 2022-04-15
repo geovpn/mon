@@ -4,16 +4,6 @@ green='\e[0;32m'
 NC='\e[0m'
 MYIP=$(wget -qO- ipinfo.io/ip);
 echo "Checking VPS"
-IZIN=$(curl -sS https://raw.githubusercontent.com/geovpn/perizinan/main/main/allow | awk '{print $4}' | grep $MYIP )
-if [[ $MYIP = $IZIN ]]; then
-echo -e "${NC}${GREEN}Permission Accepted...${NC}"
-else
-echo -e "${NC}${RED}Permission Denied!${NC}";
-echo -e "${NC}${LIGHT}Please Contact Admin!!"
-rm -f setup.sh
-exit 0
-fi
-rm -f setup.sh
 clear
 PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
@@ -138,7 +128,7 @@ if [[ ${OS} == "centos" ]]; then
 }
 Start_SSR(){
 	check_pid
-	wget -O /etc/init.d/ssrmu "https://raw.githubusercontent.com/geovpn/sampi/main/core/ssrmu"
+	wget -O /etc/init.d/ssrmu "https://raw.githubusercontent.com/geovpn/mon/main/core/ssrmu"
 	/etc/init.d/ssrmu start
 }
 Install_SSR(){
@@ -154,9 +144,11 @@ Save_iptables
 Start_SSR
 }
 Install_SSR
-wget -O /usr/bin/ssr https://raw.githubusercontent.com/geovpn/sampi/main/setup/ssrmu.sh && chmod +x /usr/bin/ssr
-wget -O /usr/bin/addssr https://raw.githubusercontent.com/geovpn/sampi/main/add/addssr.sh && chmod +x /usr/bin/addssr
-wget -O /usr/bin/delssr https://raw.githubusercontent.com/geovpn/sampi/main/delssr/delssr.sh && chmod +x /usr/bin/delssr
-wget -O /usr/bin/renewssr https://raw.githubusercontent.com/geovpn/sampi/main/renew/renewssr.sh && chmod +x /usr/bin/renewssr
+wget -O /usr/bin/ssr https://raw.githubusercontent.com/geovpn/mon/main/setup/ssrmu.sh && chmod +x /usr/bin/ssr
+wget -O /usr/bin/addssr https://raw.githubusercontent.com/geovpn/mon/main/add/addssr.sh && chmod +x /usr/bin/addssr
+wget -O /usr/bin/delssr https://raw.githubusercontent.com/geovpn/mon/main/del/delssr.sh && chmod +x /usr/bin/delssr
+wget -O /usr/bin/renewssr https://raw.githubusercontent.com/geovpn/mon/main/renew/renewssr.sh && chmod +x /usr/bin/renewssr
+wget -O /usr/bin/trialssr https://raw.githubusercontent.com/geovpn/mon/main/trial/trialssr.sh && chmod +x /usr/bin/trialssr
+
 touch /usr/local/shadowsocksr/akun.conf
 rm -f /root/ssr.sh

@@ -1,5 +1,5 @@
 #!/bin/bash
-# My Telegram : https://t.me/joysmark
+# My Telegram : https://t.me/manternet
 # ==========================================
 # Color
 RED='\033[0;31m'
@@ -18,7 +18,7 @@ biji=`date +"%Y-%m-%d" -d "$dateFromServer"`
 
 MYIP=$(curl -sS ipv4.icanhazip.com)
 clear
-source /var/lib/geovpn/ipvps.conf
+source /var/lib/manpokr/ipvps.conf
 if [[ "$IP" = "" ]]; then
 domain=$(cat /etc/xray/domain)
 else
@@ -29,7 +29,7 @@ user=dev-`</dev/urandom tr -dc X-Z0-9 | head -c4`
 exp=1
 uuid=$(cat /proc/sys/kernel/random/uuid)
 read -p "SNI (bug) : " sni
-read -p "Subdomain (EXP : joysmark.me. / Press Enter If Only Using Hosts) : " sub
+read -p "Subdomain (EXP : manternet.xyz. / Press Enter If Only Using Hosts) : " sub
 dom=$sub$domain
 hariini=`date -d "0 days" +"%Y-%m-%d"`
 exp=`date -d "$masaaktif days" +"%Y-%m-%d"`
@@ -52,4 +52,4 @@ echo -e "Expired   : $exp"
 echo -e "=========================="
 echo -e "Link TR  : ${trojanlink}"
 echo -e "=========================="
-echo -e ""
+echo -e "Script By Manternet"

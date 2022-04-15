@@ -10,17 +10,6 @@ NC="\e[0m"
 # Validate Your IP Address
 MYIP=$(wget -qO- ipinfo.io/ip);
 echo "Checking VPS"
-IZIN=$(curl -sS https://raw.githubusercontent.com/geovpn/perizinan/main/main/allow | awk '{print $4}' | grep $MYIP )
-if [[ $MYIP = $IZIN ]]; then
-echo -e "${NC}${GREEN}Permission Accepted...${NC}"
-else
-echo -e "${NC}${RED}Permission Denied!${NC}";
-echo -e "${NC}${LIGHT}Please Contact Admin!!"
-rm -f setup.sh
-exit 0
-fi
-rm -f setup.sh
-clear
 clear
 IP=$( curl -s ipinfo.io/ip );
 uuid=$(cat /etc/trojan/uuid.txt)
@@ -34,7 +23,7 @@ exp=1
 domain=$(cat /etc/v2ray/domain)
 read -p "Expired (days): " masaaktif
 read -p "SNI (BUG)     : " sni
-read -p "Subdomain (EXP : geovpn.xyz. / Press Enter If Only Using Hosts) : " sub
+read -p "Subdomain (EXP : manternet.xyz. / Press Enter If Only Using Hosts) : " sub
 dom=$sub$domain
 sed -i '/"'""$uuid""'"$/a\,"'""$user""'"' /etc/trojan/config.json
 exp=`date -d "$masaaktif days" +"%Y-%m-%d"`
@@ -53,4 +42,4 @@ echo -e "Expired   : $exp"
 echo -e "=========================="
 echo -e "Link TR  : ${trojanlink}"
 echo -e "=========================="
-echo -e "Script By geovpn"
+echo -e ""

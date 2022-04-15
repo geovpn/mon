@@ -1,5 +1,5 @@
 #!/bin/bash
-# My Telegram : https://t.me/joysmark
+# My Telegram : https://t.me/manternet
 # ==========================================
 # Color
 RED='\033[0;31m'
@@ -20,7 +20,7 @@ MYIP=$(curl -sS ipv4.icanhazip.com)
 clear
 IP=$(wget -qO- ipinfo.io/ip);
 ssr_user=dev-`</dev/urandom tr -dc X-Z0-9 | head -c4`
-source /var/lib/geovpn/ipvps.conf
+source /var/lib/manpokr/ipvps.conf
 if [[ "$IP2" = "" ]]; then
 domain=$(cat /etc/xray/domain)
 else
@@ -73,4 +73,4 @@ echo -e "Expired     : ${exp} "
 echo -e "=========================="
 echo -e "Link SSR    : ${ssr_link}"
 echo -e "=========================="
-echo -e ""
+echo -e "Script By Manternet"

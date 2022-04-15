@@ -23,7 +23,7 @@ domain=$(cat /etc/xray/domain)
 else
 domain=$IP
 fi
-tr="$(cat /etc/xray/trojan.json | grep port | sed 's/"//g' | sed 's/port//g' | sed 's/://g' | sed 's/,//g' | sed 's/ //g')"
+tr="$(cat /etc/xray/trojan-grpc.json | grep port | sed 's/"//g' | sed 's/port//g' | sed 's/://g' | sed 's/,//g' | sed 's/ //g')"
 until [[ $user =~ ^[a-zA-Z0-9_]+$ && ${user_EXISTS} == '0' ]]; do
 		read -rp "Password : " -e user
 		user_EXISTS=$(grep -w $user /etc/xray/trojan.json | wc -l)
@@ -42,8 +42,8 @@ hariini=`date -d "0 days" +"%Y-%m-%d"`
 exp=`date -d "$masaaktif days" +"%Y-%m-%d"`
 sed -i '/#xray-trojan$/a\#&# '"$user na$exp"'\
 },{"password": "'""$user""'","email": "'""$user""'"' /etc/xray/trojan.json
-systemctl restart x-tr.service
-trojanlink="trojan://${user}@${dom}:${tr}?sni=$sni#$user"
+systemctl restart trojan-grpc.service
+trojanlink="trojan://${user}@${dom}:${tr}?encryption=none&peer=${dom}&security=tls&type=grpc&sni=${sni}&alpn=h2&path=${path}&serviceName=${path}#$user"
 service cron restart
 clear
 
@@ -51,13 +51,12 @@ echo -e "======-Xray/TROJAN-======"
 echo -e "Remarks   : ${user}"
 echo -e "IP/Host   : ${MYIP}"
 echo -e "Domain    : ${domain}"
-echo -e "SNI       : $sni"
 echo -e "Subdomain : $dom"
 echo -e "Port      : ${tr}"
 echo -e "Key       : ${user}"
 echo -e "Created   : $hariini"
 echo -e "Expired   : $exp"
 echo -e "=========================="
-echo -e "Link TR  : ${trojanlink}"
+echo -e "Link TR-GRPC  : ${trojanlink}"
 echo -e "=========================="
 echo -e "Script By Manternet"

@@ -12,16 +12,6 @@ ipadd=$(curl -s ipinfo.io/ip);
 # Validate Your IP Address
 MYIP=$(wget -qO- ipinfo.io/ip);
 echo "Checking VPS"
-IZIN=$(curl -sS https://raw.githubusercontent.com/geovpn/perizinan/main/main/allow | awk '{print $4}' | grep $MYIP )
-if [[ $MYIP = $IZIN ]]; then
-echo -e "${NC}${GREEN}Permission Accepted...${NC}"
-else
-echo -e "${NC}${RED}Permission Denied!${NC}";
-echo -e "${NC}${LIGHT}Please Contact Admin!!"
-rm -f setup.sh
-exit 0
-fi
-rm -f setup.sh
 clear
 IP=$( curl -s ipinfo.io/ip );
 clear
@@ -47,7 +37,7 @@ until [[ $user =~ ^[a-zA-Z0-9_]+$ && ${CLIENT_EXISTS} == '0' ]]; do
 uuid=$(cat /proc/sys/kernel/random/uuid)
 read -p "Expired (days): " masaaktif
 read -p "SNI (bug) : " sni
-read -p "Subdomain (EXP : geovpn.xyz. / Press Enter If Only Using Hosts) : " sub
+read -p "Subdomain (EXP : manternet.xyz. / Press Enter If Only Using Hosts) : " sub
 dom=$sub$domain
 exp=`date -d "$masaaktif days" +"%Y-%m-%d"`
 sed -i '/#tls$/a\### '"$user $exp"'\
@@ -64,6 +54,7 @@ echo -e "            V2RAY VLESS          "
 echo -e "================================="
 echo -e "Remarks        : ${user}"
 echo -e "Domain         : ${dom}"
+echo -e "Bug            : ${sni}"
 echo -e "port TCP       : $tls"
 echo -e "port none TCP  : $none"
 echo -e "id             : ${uuid}"

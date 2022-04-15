@@ -9,17 +9,6 @@ NC="\e[0m"
 # Validate Your IP Address
 MYIP=$(wget -qO- icanhazip.com);
 echo "Checking Auth For Permission"
-IZIN=$( curl https://raw.githubusercontent.com/geovpn/perizinan/main/main/allow | grep $MYIP )
-if [[ $MYIP == "" ]]; then
-    echo "No Database Founded !"
-    exit 1
-elif [[ $MYIP = $IZIN ]]; then
-    echo -e "${GREEN}Granted !${NC} Your IP Adress Is Registered"
-else
-    echo -e "${RED}Denied !${NC} Your IP Adress Is Not Registered";
-    echo "Please Contact Admin For Buying Scripts"
-    exit 0
-fi
 
 trgo=$(cat /etc/trgo-mini/config.json | grep local_port | sed 's/local_//g' | sed 's/port//g' | sed 's/://g' | sed 's/,//g' | sed 's/"//g' | sed 's/   //g' | sed 's/  //g')
 echo -e "======================================"
@@ -56,5 +45,12 @@ echo -e "${GREEN}Succesfully Changed Trojan-GO Port To $trgo1${NC}"
 else
 echo -e "${RED}Error ! ${NC}Port $trgo1 Is Already Used"
 fi
+;;
+x)
+exit
+menu
+;;
+*)
+echo "Please enter an correct number"
 ;;
 esac

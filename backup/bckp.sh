@@ -20,7 +20,7 @@ cp /etc/shadow backup/
 cp /etc/gshadow backup/
 cp -r /etc/wireguard backup/wireguard
 cp /etc/shadowsocks-libev/akun.conf backup/ss.conf
-cp -r /var/lib/geovpn/ backup/geovpn
+cp -r /var/lib/Manpokr/ backup/manpokr
 cp -r /home/sstp backup/sstp
 cp -r /etc/v2ray backup/v2ray
 cp -r /etc/xray backup/xray

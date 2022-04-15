@@ -1,12 +1,11 @@
 #!/bin/bash
 clear
-echo "╔════════════════════════════════════════════════════════════════╗"
-echo "║                        ┃ TRial Menu ┃                          ║" 
-echo "╚════════════════════════════════════════════════════════════════╝" 
-echo "║ 1.Create TRial XRay VMess Accounts                             ║"
-echo "║ 2.Create TRial XRay VLess Accounts                             ║"
-echo "║ 3.Create TRial XRay Trojan Accounts                            ║"
-echo "║ 4.Create TRial XRay XTLS Accounts                              ║"
+echo -e "                   ═══[TRIAL MENU]═══            " | lolcat
+echo -e "     \e[32m══════════════════════════════\e[m" | lolcat
+echo " 1)= >> Create TRial XRay VMess Accounts                         
+echo " 2)= >> Create TRial XRay VLess Accounts                      
+echo " 3)= >> Create TRial XRay Trojan Accounts                      
+echo " 4)= >> Create TRial XRay XTLS Accounts                              ║"
 echo "║ 5.Create TRial XRay GRPC Accounts                              ║"
 echo "║ 6.Create TRial V2Ray Vmess Websocket                           ║"
 echo "║ 7.Create TRial V2Ray Vless Websocket                           ║"

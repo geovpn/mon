@@ -1,5 +1,5 @@
 #!/bin/bash
-# My Telegram : https://t.me/geovpn
+# My Telegram : https://t.me/Manternet
 # ==========================================
 # Color
 RED='\033[0;31m'
@@ -16,73 +16,16 @@ dateFromServer=$(curl -v --insecure --silent https://google.com/ 2>&1 | grep Dat
 biji=`date +"%Y-%m-%d" -d "$dateFromServer"`
 #########################
 
-BURIQ () {
-    curl -sS  https://raw.githubusercontent.com/geovpn/perizinan/main/main/allow > /root/tmp
-    data=( `cat /root/tmp | grep -E "^### " | awk '{print $2}'` )
-    for user in "${data[@]}"
-    do
-    exp=( `grep -E "^### $user" "/root/tmp" | awk '{print $3}'` )
-    d1=(`date -d "$exp" +%s`)
-    d2=(`date -d "$biji" +%s`)
-    exp2=$(( (d1 - d2) / 86400 ))
-    if [[ "$exp2" -le "0" ]]; then
-    echo $user > /etc/.$user.ini
-    else
-    rm -f  /etc/.$user.ini > /dev/null 2>&1
-    fi
-    done
-    rm -f  /root/tmp
-}
+
 
 MYIP=$(curl -sS ipv4.icanhazip.com)
-Name=$(curl -sS https://raw.githubusercontent.com/geovpn/perizinan/main/main/allow | grep $MYIP | awk '{print $2}')
-echo $Name > /usr/local/etc/.$Name.ini
-CekOne=$(cat /usr/local/etc/.$Name.ini)
 
-Bloman () {
-if [ -f "/etc/.$Name.ini" ]; then
-CekTwo=$(cat /etc/.$Name.ini)
-    if [ "$CekOne" = "$CekTwo" ]; then
-        res="Expired"
-    fi
-else
-res="Permission Accepted..."
-fi
-}
-
-PERMISSION () {
-    MYIP=$(curl -sS ipv4.icanhazip.com)
-    IZIN=$(curl -sS https://raw.githubusercontent.com/geovpn/perizinan/main/main/allow | awk '{print $4}' | grep $MYIP )
-    if [ "$MYIP" = "$IZIN" ]; then
-    Bloman
-    else
-    res="Permission Denied!"
-    fi
-    BURIQ
-}
-red='\e[1;31m'
-green='\e[0;32m'
-NC='\e[0m'
-green() { echo -e "\\033[32;1m${*}\\033[0m"; }
-red() { echo -e "\\033[31;1m${*}\\033[0m"; }
-PERMISSION
-if [ -f /home/needupdate ]; then
-red "Your script need to update first !"
-exit 0
-elif [ "$res" = "Permission Accepted..." ]; then
-green "Permission Accepted !"
-else
-red "Permission Denied !"
-rm setup.sh > /dev/null 2>&1
-sleep 10
-exit 0
-fi
 clear
-data=( `cat /var/lib/geovpn/data-user-l2tp | grep '^###' | cut -d ' ' -f 2`);
+data=( `cat /var/lib/manpokr/data-user-l2tp | grep '^###' | cut -d ' ' -f 2`);
 now=`date +"%Y-%m-%d"`
 for user in "${data[@]}"
 do
-exp=$(grep -w "^### $user" "/var/lib/geovpn/data-user-l2tp" | cut -d ' ' -f 3)
+exp=$(grep -w "^### $user" "/var/lib/manpokr/data-user-l2tp" | cut -d ' ' -f 3)
 d1=$(date -d "$exp" +%s)
 d2=$(date -d "$now" +%s)
 exp2=$(( (d1 - d2) / 86400 ))
@@ -93,16 +36,16 @@ sed -i '/^'"$user"':\$1\$/d' /etc/ipsec.d/passwd
 chmod 600 /etc/ppp/chap-secrets* /etc/ipsec.d/passwd*
 fi
 done
-data=( `cat /var/lib/geovpn/data-user-pptp | grep '^###' | cut -d ' ' -f 2`);
+data=( `cat /var/lib/manpokr/data-user-pptp | grep '^###' | cut -d ' ' -f 2`);
 now=`date +"%Y-%m-%d"`
 for user in "${data[@]}"
 do
-exp=$(grep -w "^### $user" "/var/lib/geovpn/data-user-pptp" | cut -d ' ' -f 3)
+exp=$(grep -w "^### $user" "/var/lib/manpokr/data-user-pptp" | cut -d ' ' -f 3)
 d1=$(date -d "$exp" +%s)
 d2=$(date -d "$now" +%s)
 exp2=$(( (d1 - d2) / 86400 ))
 if [[ "$exp2" = "0" ]]; then
-sed -i "/^### $user $exp/d" "/var/lib/geovpn/data-user-pptp"
+sed -i "/^### $user $exp/d" "/var/lib/manpokr/data-user-pptp"
 sed -i '/^"'"$user"'" pptpd/d' /etc/ppp/chap-secrets
 chmod 600 /etc/ppp/chap-secrets*
 fi
@@ -141,16 +84,16 @@ cd
 fi
 done
 /etc/init.d/ssrmu restart
-data=( `cat /var/lib/geovpn/data-user-sstp | grep '^###' | cut -d ' ' -f 2`);
+data=( `cat /var/lib/manpokr/data-user-sstp | grep '^###' | cut -d ' ' -f 2`);
 now=`date +"%Y-%m-%d"`
 for user in "${data[@]}"
 do
-exp=$(grep -w "^### $user" "/var/lib/geovpn/data-user-sstp" | cut -d ' ' -f 3)
+exp=$(grep -w "^### $user" "/var/lib/manpokr/data-user-sstp" | cut -d ' ' -f 3)
 d1=$(date -d "$exp" +%s)
 d2=$(date -d "$now" +%s)
 exp2=$(( (d1 - d2) / 86400 ))
 if [[ "$exp2" = "0" ]]; then
-sed -i "/^### $user $exp/d" "/var/lib/geovpn/data-user-sstp"
+sed -i "/^### $user $exp/d" "/var/lib/manpokr/data-user-sstp"
 sed -i '/^'"$user"'/d' /home/sstp/sstp_account
 fi
 done
